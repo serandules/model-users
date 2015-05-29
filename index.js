@@ -1,3 +1,11 @@
 var mongoose = require('mongoose');
 
-module.exports = mongoose.model('User') || require('./model');
+var model;
+
+try {
+    model = mongoose.model('User') || require('/model');
+} catch (e) {
+    model = require('/model');
+}
+
+module.exports = model;
