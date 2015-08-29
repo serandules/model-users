@@ -7,7 +7,7 @@ var Schema = mongoose.Schema;
 var user = Schema({
     email: String,
     password: String,
-    token: { type: Schema.Types.ObjectId, ref: 'Token' },
+    token: {type: Schema.Types.ObjectId, ref: 'Token'},
     alias: String,
     firstname: String,
     lastname: String,
@@ -30,6 +30,23 @@ user.methods.auth = function (password, callback) {
     bcrypt.compare(password, this.password, function (err, res) {
         callback(err, res);
     });
+};
+
+/**
+ * *
+ * vehicles/users/1/comments
+ * vehicles:users:1:comments
+ * vehicles:create:*
+ * vehicles:read:*
+ * vehicles:read:1
+ * vehicles:read:1,2
+ * {
+ *
+ * }
+ * @param permission
+ */
+user.methods.can = function (permission) {
+    var perms = this.permissions;
 };
 
 user.pre('save', function (next) {
