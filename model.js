@@ -8,6 +8,7 @@ var user = Schema({
     email: String,
     password: String,
     token: {type: Schema.Types.ObjectId, ref: 'Token'},
+    permissions: {},
     alias: String,
     firstname: String,
     lastname: String,
@@ -49,24 +50,56 @@ user.methods.can = function (permission) {
     var perms = this.permissions;
 };
 
+var encrypt = function (password, done) {
+    bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+        if (err) {
+            return done(err);
+        }
+        bcrypt.hash(password, salt, function (err, hash) {
+            if (err) {
+                return done(err);
+            }
+            done(false, hash);
+        });
+    });
+};
+
 user.pre('save', function (next) {
     var user = this;
     if (!user.isModified('password')) {
         return next();
     }
-    bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+    encrypt(user.password, function (err, hash) {
         if (err) {
             return next(err);
         }
-        bcrypt.hash(user.password, salt, function (err, hash) {
-            if (err) {
-                return next(err);
-            }
-            user.password = hash;
-            next();
-        });
+        user.password = hash;
+        next();
     });
 });
+
+var update = function (next) {
+    var user = this;
+    var $setOnInsert = user._update.$setOnInsert;
+    if (!$setOnInsert) {
+        return next();
+    }
+    var password = $setOnInsert.password;
+    if (!password) {
+        return next();
+    }
+    encrypt(password, function (err, hash) {
+        if (err) {
+            return next(err);
+        }
+        $setOnInsert.password = hash;
+        next();
+    });
+};
+
+user.pre('update', update);
+
+user.pre('findOneAndUpdate', update);
 
 user.virtual('id').get(function () {
     return this._id;
