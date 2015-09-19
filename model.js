@@ -7,7 +7,7 @@ var Schema = mongoose.Schema;
 var user = Schema({
     email: String,
     password: String,
-    token: {type: Schema.Types.ObjectId, ref: 'Token'},
+    tokens: [{type: Schema.Types.ObjectId, ref: 'Token'}],
     permissions: {},
     alias: String,
     firstname: String,
@@ -78,28 +78,19 @@ user.pre('save', function (next) {
     });
 });
 
-var update = function (next) {
+user.pre('update', function (next) {
     var user = this;
-    var $setOnInsert = user._update.$setOnInsert;
-    if (!$setOnInsert) {
+    if (!user.isModified('password')) {
         return next();
     }
-    var password = $setOnInsert.password;
-    if (!password) {
-        return next();
-    }
-    encrypt(password, function (err, hash) {
+    encrypt(user.password, function (err, hash) {
         if (err) {
             return next(err);
         }
-        $setOnInsert.password = hash;
+        user.password = hash;
         next();
     });
-};
-
-user.pre('update', update);
-
-user.pre('findOneAndUpdate', update);
+});
 
 user.virtual('id').get(function () {
     return this._id;
