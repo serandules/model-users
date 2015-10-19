@@ -2,13 +2,17 @@ var bcrypt = require('bcrypt');
 var SALT_WORK_FACTOR = 10;
 
 var mongoose = require('mongoose');
+var permission = require('permission');
+
 var Schema = mongoose.Schema;
 
 var user = Schema({
     email: String,
     password: String,
     tokens: [{type: Schema.Types.ObjectId, ref: 'Token'}],
-    permissions: {},
+    has: {type: Object, default: {}},
+    allowed: {type: Object, default: {}},
+    roles: [{type: Schema.Types.ObjectId, ref: 'Role'}],
     alias: String,
     firstname: String,
     lastname: String,
@@ -33,21 +37,14 @@ user.methods.auth = function (password, callback) {
     });
 };
 
-/**
- * *
- * vehicles/users/1/comments
- * vehicles:users:1:comments
- * vehicles:create:*
- * vehicles:read:*
- * vehicles:read:1
- * vehicles:read:1,2
- * {
- *
- * }
- * @param permission
- */
-user.methods.can = function (permission) {
-    var perms = this.permissions;
+user.methods.can = function (perm, action) {
+    return permission.has(this.has, perm.split(':'), action);
+};
+
+user.methods.permit = function (perm, actions, done) {
+    actions = actions instanceof Array ? actions : [actions];
+    permission.add(this.has, perm.split(':'), actions);
+    this.save(done);
 };
 
 var encrypt = function (password, done) {
