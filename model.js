@@ -7,7 +7,7 @@ var permission = require('permission');
 var Schema = mongoose.Schema;
 
 var user = Schema({
-    email: String,
+    email: {type: String, index: {unique: true}},
     password: String,
     tokens: [{type: Schema.Types.ObjectId, ref: 'Token'}],
     has: {type: Object, default: {}},
