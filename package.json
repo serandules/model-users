@@ -9,7 +9,8 @@
     "dependencies": {
         "mongoose": "4.*",
         "bcrypt": "0.*",
-        "logger": "serandules/logger#master"
+        "logger": "serandules/logger#master",
+        "permission": "serandules/permission#master"
     },
     "repository": {
         "type": "git",
