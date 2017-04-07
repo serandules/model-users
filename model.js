@@ -7,8 +7,8 @@ var permission = require('permission');
 var Schema = mongoose.Schema;
 
 var user = Schema({
-    email: {type: String, index: {unique: true}},
-    password: String,
+    email: {type: String, index: {unique: true}, required: true},
+    password: {type: String, required: true},
     tokens: [{type: Schema.Types.ObjectId, ref: 'Token'}],
     has: {type: Object, default: {}},
     allowed: {type: Object, default: {}},
@@ -28,6 +28,7 @@ user.set('toJSON', {
     transform: function (doc, ret, options) {
         delete ret.password;
         delete ret._id;
+        delete ret.__v;
     }
 });
 
