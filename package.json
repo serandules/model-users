@@ -1,6 +1,6 @@
 {
-    "name": "user",
-    "description": "user",
+    "name": "model-users",
+    "description": "model-users",
     "version": "0.0.0",
     "author": {
         "name": "serandives",
@@ -14,6 +14,6 @@
     },
     "repository": {
         "type": "git",
-        "url": "git://github.com/serandules/user.git"
+        "url": "git://github.com/serandules/model-users.git"
     }
 }
