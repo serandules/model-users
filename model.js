@@ -1,26 +1,75 @@
 var bcrypt = require('bcrypt');
-var SALT_WORK_FACTOR = 10;
-
 var mongoose = require('mongoose');
-var permission = require('permission');
-
 var Schema = mongoose.Schema;
 
+var permission = require('permission');
+var types = require('validators').types;
+
+var SALT_WORK_FACTOR = 10;
+
 var user = Schema({
-    email: {type: String, index: {unique: true}, required: true},
-    password: {type: String, required: true},
-    tokens: [{type: Schema.Types.ObjectId, ref: 'Token'}],
     has: {type: Object, default: {}},
     allowed: {type: Object, default: {}},
-    roles: [{type: Schema.Types.ObjectId, ref: 'Role'}],
-    alias: String,
-    firstname: String,
-    lastname: String,
-    birthday: Date,
-    addresses: {},
-    mobiles: [String],
-    socials: {}
-});
+    password: {type: String},
+    email: {
+        type: String,
+        index: {unique: true},
+        required: true,
+        validator: types.email()
+    },
+    tokens: {
+        type: [Schema.Types.ObjectId],
+        ref: 'tokens',
+        validator: types.ref()
+    },
+    roles: {
+        type: [Schema.Types.ObjectId],
+        ref: 'roles',
+        validator: types.ref()
+    },
+    alias: {
+        type: String,
+        validator: types.name({
+            length: 100
+        })
+    },
+    firstname: {
+        type: String,
+        validator: types.name({
+            length: 100
+        })
+    },
+    lastname: {
+        type: String,
+        validator: types.name({
+            length: 100
+        })
+    },
+    birthday: {
+        type: Date,
+        validator: types.birthday({
+            length: 100
+        })
+    },
+    addresses: {
+        type: Schema.Types.Mixed,
+        validator: types.addresses({
+            length: 200
+        })
+    },
+    phones: {
+        type: Schema.Types.Mixed,
+        validator: types.phones({
+            length: 20
+        })
+    },
+    socials: {
+        type: Schema.Types.Mixed,
+        validator: types.socials({
+            length: 50
+        })
+    }
+}, {collection: 'users'});
 
 user.set('toJSON', {
     getters: true,
@@ -104,4 +153,4 @@ user.virtual('id').get(function () {
  callback(null);
  };*/
 
-module.exports = mongoose.model('User', user);
+module.exports = mongoose.model('users', user);
