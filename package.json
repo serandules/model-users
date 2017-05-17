@@ -10,7 +10,8 @@
         "mongoose": "4.*",
         "bcrypt": "1.0.2",
         "logger": "serandules/logger#master",
-        "permission": "serandules/permission#master"
+        "permission": "serandules/permission#master",
+        "validators": "serandules/validators#master"
     },
     "repository": {
         "type": "git",
