@@ -47,26 +47,23 @@ var user = Schema({
     },
     birthday: {
         type: Date,
-        validator: types.birthday({
-            length: 100
-        })
+        validator: types.birthday()
     },
-    addresses: {
-        type: Schema.Types.Mixed,
-        validator: types.addresses({
-            length: 200
-        })
+    locations: {
+        type: [Schema.Types.ObjectId],
+        ref: 'locations',
+        validator: types.ref()
     },
     phones: {
         type: Schema.Types.Mixed,
         validator: types.phones({
-            length: 20
+            max: 5
         })
     },
     socials: {
         type: Schema.Types.Mixed,
         validator: types.socials({
-            length: 50
+            max: 20
         })
     }
 }, {collection: 'users'});
