@@ -2,14 +2,13 @@ var bcrypt = require('bcrypt');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var mongins = require('mongins');
 var permission = require('permission');
 var types = require('validators').types;
 
 var SALT_WORK_FACTOR = 10;
 
 var user = Schema({
-    has: {type: Object, default: {}},
-    allowed: {type: Object, default: {}},
     password: {type: String},
     email: {
         type: String,
@@ -68,6 +67,10 @@ var user = Schema({
     }
 }, {collection: 'users'});
 
+user.plugin(mongins);
+user.plugin(mongins.createdAt);
+user.plugin(mongins.updatedAt);
+
 user.set('toJSON', {
     getters: true,
     //virtuals: false,
@@ -108,8 +111,13 @@ var encrypt = function (password, done) {
     });
 };
 
-user.pre('save', function (next) {
-    var user = this;
+user.pre('validate', function (next) {
+    this.updatedAt = new Date();
+    next();
+});
+
+user.post('validate', function (usr, next) {
+    var user = usr;
     if (!user.isModified('password')) {
         return next();
     }
@@ -121,7 +129,7 @@ user.pre('save', function (next) {
         next();
     });
 });
-
+/*
 user.pre('update', function (next) {
     var user = this;
     if (!user.isModified('password')) {
@@ -134,7 +142,7 @@ user.pre('update', function (next) {
         user.password = hash;
         next();
     });
-});
+});*/
 
 user.virtual('id').get(function () {
     return this._id;
