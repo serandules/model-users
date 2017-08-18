@@ -21,9 +21,10 @@ var user = Schema({
         ref: 'tokens',
         validator: types.ref()
     },
-    roles: {
+    // TODO: check how groups: undefined resulted in database, whether empty array or null
+    groups: {
         type: [Schema.Types.ObjectId],
-        ref: 'roles',
+        ref: 'groups',
         validator: types.ref()
     },
     alias: {
@@ -144,9 +145,6 @@ user.pre('update', function (next) {
     });
 });*/
 
-user.virtual('id').get(function () {
-    return this._id;
-});
 /*
  user.statics.find = function (options, callback) {
  if (options.email) {
