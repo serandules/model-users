@@ -2,6 +2,7 @@ var bcrypt = require('bcrypt');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var mongutils = require('mongutils');
 var mongins = require('mongins');
 var permission = require('permission');
 var types = require('validators').types;
@@ -25,7 +26,7 @@ var user = Schema({
     groups: {
         type: [Schema.Types.ObjectId],
         ref: 'groups',
-        validator: types.ref()
+        validator: types.groups()
     },
     alias: {
         type: String,
@@ -71,6 +72,10 @@ var user = Schema({
 user.plugin(mongins);
 user.plugin(mongins.createdAt);
 user.plugin(mongins.updatedAt);
+
+mongutils.ensureIndexes(user, [
+    {createdAt: -1, _id: -1}
+]);
 
 user.set('toJSON', {
     getters: true,
@@ -131,19 +136,19 @@ user.post('validate', function (usr, next) {
     });
 });
 /*
-user.pre('update', function (next) {
-    var user = this;
-    if (!user.isModified('password')) {
-        return next();
-    }
-    encrypt(user.password, function (err, hash) {
-        if (err) {
-            return next(err);
-        }
-        user.password = hash;
-        next();
-    });
-});*/
+ user.pre('update', function (next) {
+ var user = this;
+ if (!user.isModified('password')) {
+ return next();
+ }
+ encrypt(user.password, function (err, hash) {
+ if (err) {
+ return next(err);
+ }
+ user.password = hash;
+ next();
+ });
+ });*/
 
 /*
  user.statics.find = function (options, callback) {
