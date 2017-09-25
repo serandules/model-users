@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 
+require('model-groups');
+
 var model;
 
 try {

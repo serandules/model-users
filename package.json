@@ -12,7 +12,8 @@
     "logger": "serandules/logger#master",
     "permission": "serandules/permission#master",
     "validators": "serandules/validators#master",
-    "mongins": "serandules/mongins#master"
+    "mongins": "serandules/mongins#master",
+    "model-groups": "serandules/model-groups#master"
   },
   "repository": {
     "type": "git",
