@@ -7,7 +7,7 @@
     "email": "serandives@gmail.com"
   },
   "dependencies": {
-    "mongoose": "4.*",
+    "mongoose": "5.*",
     "bcrypt": "1.0.2",
     "logger": "serandules/logger#master",
     "permission": "serandules/permission#master",
