@@ -5,7 +5,9 @@ var Schema = mongoose.Schema;
 var mongutils = require('mongutils');
 var mongins = require('mongins');
 var permission = require('permission');
-var types = require('validators').types;
+var validators = require('validators');
+var types = validators.types;
+var values = validators.values;
 
 var SALT_WORK_FACTOR = 10;
 
@@ -26,7 +28,8 @@ var user = Schema({
     groups: {
         type: [Schema.Types.ObjectId],
         ref: 'groups',
-        validator: types.groups()
+        validator: types.groups(),
+        value: values.groups()
     },
     alias: {
         type: String,
