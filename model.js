@@ -91,11 +91,7 @@ user.set('toJSON', {
 });
 
 user.methods.auth = function (password, callback) {
-    var hash = this.password;
-    bcrypt.compare(password, this.password, function (err, res) {
-        console.log('password: %s, hash: %s, res: %s', password, hash, res)
-        callback(err, res);
-    });
+    bcrypt.compare(password, this.password, callback);
 };
 
 user.methods.can = function (perm, action) {
