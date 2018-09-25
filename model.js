@@ -73,8 +73,8 @@ var user = Schema({
 }, {collection: 'users'});
 
 user.plugin(mongins);
-user.plugin(mongins.createdAt);
-user.plugin(mongins.updatedAt);
+user.plugin(mongins.createdAt());
+user.plugin(mongins.updatedAt());
 
 mongutils.ensureIndexes(user, [
     {createdAt: -1, _id: -1}
