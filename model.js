@@ -65,8 +65,8 @@ var user = Schema({
     type: Date,
     validator: types.birthday()
   },
-  locations: {
-    type: [Schema.Types.ObjectId],
+  location: {
+    type: Schema.Types.ObjectId,
     ref: 'locations',
     validator: types.ref()
   },
