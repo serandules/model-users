@@ -84,7 +84,7 @@ var user = Schema({
   }
 }, {collection: 'users'});
 
-user.plugin(mongins);
+user.plugin(mongins());
 user.plugin(mongins.createdAt());
 user.plugin(mongins.updatedAt());
 
