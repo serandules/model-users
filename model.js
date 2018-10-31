@@ -1,15 +1,13 @@
-var bcrypt = require('bcrypt');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var mongutils = require('mongutils');
 var mongins = require('mongins');
+var utils = require('utils');
 var permission = require('permission');
 var validators = require('validators');
 var types = validators.types;
 var values = validators.values;
-
-var SALT_WORK_FACTOR = 10;
 
 var user = Schema({
   password: {
@@ -103,10 +101,7 @@ user.set('toJSON', {
 });
 
 user.methods.auth = function (password, done) {
-  if (!password || !this.password) {
-    return done(null, false);
-  }
-  bcrypt.compare(password, this.password, done);
+  utils.compare(password, this.password, done);
 };
 
 user.methods.can = function (perm, action) {
