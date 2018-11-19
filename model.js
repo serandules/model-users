@@ -34,6 +34,11 @@ var user = Schema({
     ref: 'tokens',
     validator: types.ref()
   },
+  avatar: {
+    type: Schema.Types.ObjectId,
+    ref: 'binaries',
+    validator: types.ref()
+  },
   // TODO: check how groups: undefined resulted in database, whether empty array or null
   groups: {
     type: [Schema.Types.ObjectId],
