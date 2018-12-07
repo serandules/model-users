@@ -11,8 +11,9 @@
     "logger": "serandules/logger#master",
     "utils": "serandules/utils#master",
     "permission": "serandules/permission#master",
-    "validators": "serandules/validators#master",
     "mongins": "serandules/mongins#master",
+    "validators": "serandules/validators#master",
+    "model": "serandules/model#master",
     "model-groups": "serandules/model-groups#master"
   },
   "repository": {

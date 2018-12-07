@@ -1,11 +1,12 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var mongutils = require('mongutils');
 var mongins = require('mongins');
 var utils = require('utils');
 var permission = require('permission');
 var validators = require('validators');
+var model = require('model');
+
 var types = validators.types;
 var values = validators.values;
 
@@ -16,9 +17,8 @@ var user = Schema({
     encrypted: true,
     validator: types.password({
       block: function (o, done) {
-        var data = o.data;
         done(null, {
-          email: data.email
+          email: o.data.email || o.user.email
         });
       }
     })
@@ -27,7 +27,8 @@ var user = Schema({
     type: String,
     index: {unique: true},
     required: true,
-    validator: types.email()
+    validator: types.email(),
+    searchable: true
   },
   tokens: {
     type: [Schema.Types.ObjectId],
@@ -91,7 +92,7 @@ user.plugin(mongins());
 user.plugin(mongins.createdAt());
 user.plugin(mongins.updatedAt());
 
-mongutils.ensureIndexes(user, [
+model.ensureIndexes(user, [
   {createdAt: -1, _id: -1}
 ]);
 
