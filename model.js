@@ -49,20 +49,15 @@ var user = Schema({
   },
   alias: {
     type: String,
+    required: true,
     validator: types.name({
       length: 100
     })
   },
-  firstname: {
+  name: {
     type: String,
     validator: types.name({
-      length: 100
-    })
-  },
-  lastname: {
-    type: String,
-    validator: types.name({
-      length: 100
+      length: 200
     })
   },
   birthday: {
@@ -106,18 +101,8 @@ user.set('toJSON', {
   }
 });
 
-user.methods.auth = function (password, done) {
-  utils.compare(password, this.password, done);
-};
-
-user.methods.can = function (perm, action) {
-  return permission.has(this.has, perm.split(':'), action);
-};
-
-user.methods.permit = function (perm, actions, done) {
-  actions = actions instanceof Array ? actions : [actions];
-  permission.add(this.has, perm.split(':'), actions);
-  this.save(done);
+user.statics.auth = function (user, password, done) {
+  utils.compare(password, user.password, done);
 };
 
 module.exports = mongoose.model('users', user);
