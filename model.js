@@ -25,7 +25,7 @@ var user = Schema({
   },
   email: {
     type: String,
-    index: {unique: true},
+    unique: true,
     required: true,
     validator: types.email(),
     searchable: true
