@@ -69,17 +69,10 @@ var user = Schema({
     ref: 'locations',
     validator: types.ref()
   },
-  phones: {
-    type: Schema.Types.Mixed,
-    validator: types.phones({
-      max: 5
-    })
-  },
-  socials: {
-    type: Schema.Types.Mixed,
-    validator: types.socials({
-      max: 20
-    })
+  contact: {
+    type: Schema.Types.ObjectId,
+    ref: 'contacts',
+    validator: types.ref()
   }
 }, {collection: 'users'});
 
