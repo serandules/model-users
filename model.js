@@ -10,7 +10,7 @@ var model = require('model');
 var types = validators.types;
 var values = validators.values;
 
-var user = Schema({
+var schema = Schema({
   password: {
     type: String,
     required: true,
@@ -76,15 +76,24 @@ var user = Schema({
   }
 }, {collection: 'users'});
 
-user.plugin(mongins());
-user.plugin(mongins.createdAt());
-user.plugin(mongins.updatedAt());
+schema.plugin(mongins());
+schema.plugin(mongins.status({
+  workflow: 'model-users'
+}));
+schema.plugin(mongins.permissions({
+  workflow: 'model-users'
+}));
+schema.plugin(mongins.visibility({
+  workflow: 'model-users'
+}));
+schema.plugin(mongins.createdAt());
+schema.plugin(mongins.updatedAt());
 
-model.ensureIndexes(user, [
+model.ensureIndexes(schema, [
   {createdAt: -1, _id: -1}
 ]);
 
-user.set('toJSON', {
+schema.set('toJSON', {
   getters: true,
   //virtuals: false,
   transform: function (doc, ret, options) {
@@ -94,8 +103,8 @@ user.set('toJSON', {
   }
 });
 
-user.statics.auth = function (user, password, done) {
+schema.statics.auth = function (user, password, done) {
   utils.compare(password, user.password, done);
 };
 
-module.exports = mongoose.model('users', user);
+module.exports = mongoose.model('users', schema);
