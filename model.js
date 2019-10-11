@@ -93,16 +93,6 @@ model.ensureIndexes(schema, [
   {createdAt: -1, _id: -1}
 ]);
 
-schema.set('toJSON', {
-  getters: true,
-  //virtuals: false,
-  transform: function (doc, ret, options) {
-    delete ret.password;
-    delete ret._id;
-    delete ret.__v;
-  }
-});
-
 schema.statics.auth = function (user, password, done) {
   utils.compare(password, user.password, done);
 };
