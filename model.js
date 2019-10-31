@@ -88,9 +88,10 @@ schema.plugin(mongins.visibility({
 }));
 schema.plugin(mongins.createdAt());
 schema.plugin(mongins.updatedAt());
+schema.plugin(mongins.modifiedAt());
 
 model.ensureIndexes(schema, [
-  {createdAt: -1, _id: -1}
+  {updatedAt: -1, _id: -1}
 ]);
 
 schema.statics.auth = function (user, password, done) {
