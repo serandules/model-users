@@ -30,11 +30,6 @@ var schema = Schema({
     validator: types.email(),
     searchable: true
   },
-  tokens: {
-    type: [Schema.Types.ObjectId],
-    ref: 'tokens',
-    validator: types.ref()
-  },
   avatar: {
     type: Schema.Types.ObjectId,
     ref: 'binaries',
