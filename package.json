@@ -7,7 +7,7 @@
     "email": "serandives@gmail.com"
   },
   "dependencies": {
-    "mongoose": "5.1.8",
+    "mongoose": "5.9.6",
     "logger": "serandules/logger#master",
     "utils": "serandules/utils#master",
     "permission": "serandules/permission#master",
