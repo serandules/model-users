@@ -42,12 +42,13 @@ var schema = Schema({
     validator: types.groups(),
     value: values.groups()
   },
-  alias: {
+  username: {
     type: String,
     required: true,
-    validator: types.name({
-      length: 100
-    })
+    validator: types.username({
+      length: 50
+    }),
+    searchable: true
   },
   name: {
     type: String,
