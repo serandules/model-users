@@ -44,6 +44,7 @@ var schema = Schema({
   },
   username: {
     type: String,
+    unique: true,
     required: true,
     validator: types.username({
       length: 50
