@@ -17,9 +17,16 @@ var schema = Schema({
     encrypted: true,
     validator: types.password({
       block: function (o, done) {
-        done(null, {
-          email: o.data.email || o.user.email
-        });
+        var email = o.data.email || (o.user && o.user.email);
+        var username = o.data.username || (o.user && o.user.username);
+        var blocked = {};
+        if (email) {
+          blocked.email = email;
+        }
+        if (username) {
+          blocked.username = username;
+        }
+        done(null, blocked);
       }
     })
   },
