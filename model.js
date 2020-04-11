@@ -81,6 +81,9 @@ var schema = Schema({
 }, {collection: 'users'});
 
 schema.plugin(mongins());
+schema.plugin(mongins._({
+  workflow: 'model-users'
+}));
 schema.plugin(mongins.status({
   workflow: 'model-users'
 }));
